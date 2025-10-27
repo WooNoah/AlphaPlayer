@@ -1,5 +1,5 @@
 PODS:
-  - BDAlphaPlayer (1.2.2)
+  - BDAlphaPlayer (1.2.4)
 
 DEPENDENCIES:
   - BDAlphaPlayer (from `../../../`)
@@ -9,8 +9,8 @@ EXTERNAL SOURCES:
     :path: "../../../"
 
 SPEC CHECKSUMS:
-  BDAlphaPlayer: 3b31756760ea37b9710bfb36a18b431ad05f6da7
+  BDAlphaPlayer: 35b6fbd2b67bab401265702e24b042bdae52f047
 
 PODFILE CHECKSUM: a2a7c83a00e25dc193359c91e412457a63e7fbad
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.16.2
