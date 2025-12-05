@@ -63,6 +63,11 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)stopWithFinishPlayingCallback;
 
+/**
+ @brief 设置播放器音量
+ */
+- (void)setVolume:(CGFloat)volume;
+
 @end
 
 

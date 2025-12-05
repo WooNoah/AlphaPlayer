@@ -31,6 +31,8 @@
 
 @property (nonatomic, strong) AVPlayer *audioPlayer;
 
+@property (atomic, assign) CGFloat specificVolume;
+
 @end
 
 @implementation BDAlphaPlayerMetalView
@@ -93,6 +95,10 @@
     [self renderCompletion];
 }
 
+- (void)setVolume:(CGFloat)volume {
+    self.specificVolume = volume;
+}
+
 #pragma mark - Private Method
 
 - (void)configRenderViewContentModeFromModel
@@ -151,6 +157,7 @@
         [session setActive:YES error:nil];
 
         self.audioPlayer = [[AVPlayer alloc] initWithPlayerItem:output.audioItem];
+        self.audioPlayer.volume = self.specificVolume;
         [self.audioPlayer play];
     }
 }
