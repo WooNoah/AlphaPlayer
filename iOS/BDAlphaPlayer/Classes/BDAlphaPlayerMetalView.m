@@ -87,6 +87,7 @@
 - (void)stop
 {
     [self destroyMTKView];
+    [self stopAudio];
 }
 
 - (void)stopWithFinishPlayingCallback
@@ -195,6 +196,10 @@
     [self.metalRenderer drainSampleBufferQueue];
     self.mtkView = nil;
     self.hasDestroyed = YES;
+}
+
+- (void)stopAudio {
+    [self.audioPlayer pause];
 }
 
 #pragma mark SetupMetal
