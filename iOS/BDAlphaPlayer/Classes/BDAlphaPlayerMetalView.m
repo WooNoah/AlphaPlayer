@@ -11,6 +11,7 @@
 #import "BDAlphaPlayerMetalRenderer.h"
 #import "BDAlphaPlayerMetalShaderType.h"
 
+#import <AVFoundation/AVFoundation.h>
 #import <MetalKit/MetalKit.h>
 #import <pthread.h>
 
@@ -28,6 +29,8 @@
 @property (nonatomic, strong) BDAlphaPlayerAssetReaderOutput *output;
 
 @property (atomic, assign) BOOL hasDestroyed;
+
+@property (nonatomic, strong) AVPlayer *audioPlayer;
 
 @end
 
@@ -83,6 +86,7 @@
 - (void)stop
 {
     [self destroyMTKView];
+    [self stopAudio];
 }
 
 - (void)stopWithFinishPlayingCallback
@@ -113,6 +117,7 @@
 
 - (void)play
 {
+    [self stopAudio];
     NSURL *url = [self.model.currentOrientationResourceInfo resourceFileURL];
     NSError *error = nil;
     BDAlphaPlayerAssetReaderOutput *output = [[BDAlphaPlayerAssetReaderOutput alloc] initWithURL:url error:&error];
@@ -141,11 +146,23 @@
     [self renderOutput:output resourceModel:self.model completion:^{
         [weakSelf renderCompletion];
     }];
+
+    if (output.audioItem) {
+        self.audioPlayer = [[AVPlayer alloc] initWithPlayerItem:output.audioItem];
+        [self.audioPlayer play];
+    }
 }
 
 - (void)renderCompletion
 {
+    [self stopAudio];
     [self didFinishPlayingWithError:nil];
+}
+
+- (void)stopAudio
+{
+    [self.audioPlayer pause];
+    self.audioPlayer = nil;
 }
 
 - (void)renderOutput:(BDAlphaPlayerAssetReaderOutput *)output resourceModel:(BDAlphaPlayerResourceModel *)resourceModel completion:(BDAlphaPlayerRenderOutputCompletion)completion

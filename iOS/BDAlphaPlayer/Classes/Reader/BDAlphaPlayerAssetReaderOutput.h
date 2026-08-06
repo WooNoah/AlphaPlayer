@@ -31,6 +31,9 @@ typedef NS_ENUM(NSUInteger, BDAlphaPlayerAssetReaderOutputErrorCode) {
 
 @property (nonatomic, assign, readonly) CGSize videoSize;
 
+/// The original asset's audio track, if the effect MP4 contains one.
+@property (nonatomic, strong, readonly, nullable) AVPlayerItem *audioItem;
+
 - (BOOL)hasNextSampleBuffer;
 
 - (CMSampleBufferRef const _Nullable)copyNextSampleBuffer;

@@ -106,6 +106,11 @@ NSString * const BDAlphaPlayerAssetReaderOutputErrorDomain = @"BDAlphaPlayerAsse
     if (!reader) {
         return;
     }
+
+    AVAssetTrack *audioTrack = [[asset tracksWithMediaType:AVMediaTypeAudio] firstObject];
+    if (audioTrack) {
+        _audioItem = [AVPlayerItem playerItemWithAsset:audioTrack.asset];
+    }
     
     NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
     AVAssetTrack *videoTrack = [videoTracks firstObject];
