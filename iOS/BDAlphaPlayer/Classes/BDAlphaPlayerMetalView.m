@@ -51,6 +51,7 @@
     if (self = [super initWithFrame:CGRectZero]) {
         self.contentScaleFactor = [UIScreen mainScreen].scale;
         self.backgroundColor = [UIColor clearColor];
+        self.audioVolume = 1.0f;
         
         self.delegate = delegate;
         [self setupMetal];
@@ -149,8 +150,15 @@
 
     if (output.audioItem) {
         self.audioPlayer = [[AVPlayer alloc] initWithPlayerItem:output.audioItem];
+        self.audioPlayer.volume = self.audioVolume;
         [self.audioPlayer play];
     }
+}
+
+- (void)setAudioVolume:(float)audioVolume
+{
+    _audioVolume = MAX(0.0f, MIN(1.0f, audioVolume));
+    self.audioPlayer.volume = _audioVolume;
 }
 
 - (void)renderCompletion

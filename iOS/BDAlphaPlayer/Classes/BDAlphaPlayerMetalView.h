@@ -35,6 +35,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BDAlphaPlayerPlayState state;
 
 /**
+ @brief Volume for the effect MP4's embedded audio track. Valid range is 0.0 to 1.0.
+*/
+@property (nonatomic, assign) float audioVolume;
+
+/**
  @brief Core method for player.Only this method can start to play MP4.
  
  @prama configuration Params player needs.
