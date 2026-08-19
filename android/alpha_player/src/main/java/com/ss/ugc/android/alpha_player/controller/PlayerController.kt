@@ -46,6 +46,7 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
         const val DESTROY: Int = 7
         const val SURFACE_PREPARED: Int = 8
         const val RESET: Int = 9
+        const val SET_VOLUME: Int = 10
 
         fun get(configuration: Configuration, mediaPlayer: IMediaPlayer? = null): PlayerController {
             return PlayerController(configuration.context, configuration.lifecycleOwner,
@@ -55,6 +56,7 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
     }
 
     private var suspendDataSource: DataSource? = null
+    private var pendingVolume: Float? = null
     var isPlaying : Boolean = false
     var playerState = PlayerState.NOT_PREPARED
     var mMonitor: IMonitor? = null
@@ -215,6 +217,10 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
         return mediaPlayer.getPlayerType()
     }
 
+    override fun setVolume(volume: Float) {
+        sendMessage(getMessage(SET_VOLUME, volume.coerceIn(0f, 1f)))
+    }
+
     @WorkerThread
     private fun initPlayer() {
         try {
@@ -226,6 +232,11 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
         }
         mediaPlayer.setScreenOnWhilePlaying(true)
         mediaPlayer.setLooping(false)
+
+        pendingVolume?.let {
+            mediaPlayer.setVolume(it)
+            pendingVolume = null
+        }
 
         mediaPlayer.setOnFirstFrameListener(object : IMediaPlayer.OnFirstFrameListener {
             override fun onFirstFrame() {
@@ -408,6 +419,15 @@ class PlayerController(val context: Context, owner: LifecycleOwner, val alphaVid
                     mediaPlayer.reset()
                     playerState = PlayerState.NOT_PREPARED
                     isPlaying = false
+                }
+                SET_VOLUME -> {
+                    val volume = msg.obj as Float
+                    try {
+                        mediaPlayer.setVolume(volume)
+                        pendingVolume = null
+                    } catch (e: Exception) {
+                        pendingVolume = volume
+                    }
                 }
                 else -> {}
             }

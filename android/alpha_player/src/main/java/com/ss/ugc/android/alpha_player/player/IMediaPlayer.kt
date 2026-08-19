@@ -73,6 +73,12 @@ interface IMediaPlayer {
     fun getPlayerType(): String
 
     /**
+     * Sets the volume of the effect MP4's embedded audio track.
+     * Valid range is 0.0 to 1.0.
+     */
+    fun setVolume(volume: Float)
+
+    /**
      * Interface definition for a callback to be invoked when playback of a
      * media source has completed.
      */

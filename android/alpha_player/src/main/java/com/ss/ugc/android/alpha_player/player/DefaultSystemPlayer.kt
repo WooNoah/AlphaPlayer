@@ -84,6 +84,11 @@ class DefaultSystemPlayer : AbsPlayer() {
         mediaPlayer.setScreenOnWhilePlaying(onWhilePlaying)
     }
 
+    override fun setVolume(volume: Float) {
+        val v = volume.coerceIn(0f, 1f)
+        mediaPlayer.setVolume(v, v)
+    }
+
     override fun getVideoInfo(): VideoInfo {
         if (TextUtils.isEmpty(dataPath)) {
             throw Exception("dataPath is null, please set setDataSource firstly!")

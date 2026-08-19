@@ -36,4 +36,10 @@ interface IPlayerController {
     fun getView(): View
 
     fun getPlayerType(): String
+
+    /**
+     * Sets the volume of the effect MP4's embedded audio track.
+     * Valid range is 0.0 to 1.0.
+     */
+    fun setVolume(volume: Float)
 }

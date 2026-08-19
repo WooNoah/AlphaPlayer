@@ -122,6 +122,10 @@ class ExoPlayerImpl(private val context: Context) : AbsPlayer(context) {
     override fun setScreenOnWhilePlaying(onWhilePlaying: Boolean) {
     }
 
+    override fun setVolume(volume: Float) {
+        exoPlayer.volume = volume.coerceIn(0f, 1f)
+    }
+
     override fun getVideoInfo(): VideoInfo {
         return VideoInfo(currVideoWidth, currVideoHeight)
     }
